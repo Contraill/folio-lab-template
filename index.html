@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Two Spirals</title>
+    <link rel="icon" href="data:," />
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+  <body>
+    <main id="lab">
+      <header class="bar">
+        <h1>Two Spirals</h1>
+        <p class="round"><span data-t="round">Round</span> <b id="step">0</b></p>
+        <div class="controls">
+          <button type="button" id="run" class="primary" aria-pressed="false">Run</button>
+          <button type="button" id="mark" data-t="mark">Checkpoint</button>
+          <button type="button" id="reset" data-t="reset">New run</button>
+        </div>
+      </header>
+      <section class="stage"><canvas id="view" role="img"></canvas></section>
+      <aside class="side">
+        <dl id="metrics" class="metrics"></dl>
+        <canvas id="chart" role="img"></canvas>
+        <section>
+          <h2 data-t="checkpoints">Checkpoints</h2>
+          <ol id="checkpoints" class="list"></ol>
+        </section>
+        <section>
+          <h2 data-t="compare">Compare</h2>
+          <p id="compare-hint" class="hint" data-t="compareHint"></p>
+          <div id="compare" class="compare"></div>
+        </section>
+        <section>
+          <h2 data-t="runs">Saved on this device</h2>
+          <p id="runs-empty" class="hint" data-t="none"></p>
+          <ol id="runs" class="list"></ol>
+          <div class="files">
+            <button type="button" id="export" data-t="export">Export run</button>
+            <label class="button"><span data-t="import">Import a run</span><input id="import" type="file" accept="application/json,.json" /></label>
+          </div>
+        </section>
+      </aside>
+      <p id="say" class="sr" role="status" aria-live="polite"></p>
+      <noscript><p>This lab app needs JavaScript.</p></noscript>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+// The lab app is static files: Cloudflare serves dist/ with the headers in public/_headers. Rename `name` for your experiment;
+// its address is then https://<name>.<your-subdomain>.workers.dev, or a custom domain added under `routes`.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "folio-lab-template",
+  "compatibility_date": "2026-10-31",
+  "assets": { "directory": "./dist", "not_found_handling": "single-page-application" },
+  "workers_dev": true,
+  "preview_urls": false
+}

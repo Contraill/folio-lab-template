@@ -1,0 +1,11 @@
+# What Folio shows for this repository (https://oztozlu.dev/lab). Every field is optional.
+# The repository also needs the `folio-lab` topic and its homepage set to the address this app is deployed at.
+title: { en: Two Spirals, tr: İki Sarmal }
+summary:
+  en: A small neural network learns to tell two spirals apart. Compare what it knows at round 100, 500 and 1000.
+  tr: Küçük bir sinir ağı iki sarmalı birbirinden ayırmayı öğreniyor. 100., 500. ve 1000. turda bildiklerini karşılaştır.
+order: 1                 # earlier than apps without one; otherwise newest push first
+embed: true              # false: Folio links to the app instead of running it in the page
+embedOptions:
+  aspect: "16:10"
+  input: [mouse, touch, keyboard]
