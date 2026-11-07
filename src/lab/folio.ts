@@ -5,7 +5,7 @@ import type { Lang, Palette } from './types.ts';
 
 export const PALETTES: Record<string, Palette> = {
   graphite: { bg: '#0f0f10', surface: '#1a1a1c', ink: '#f3f3f1', mute: '#9d9d99', accent: '#f3f3f1', signal: '#b8f26c', danger: '#ff6a4d' },
-  paper: { bg: '#f4f5f7', surface: '#ffffff', ink: '#111318', mute: '#5b616e', accent: '#111318', signal: '#2f55e0', danger: '#d23c22' },
+  paper: { bg: '#f0f2f5', surface: '#fbfcfd', ink: '#0d1117', mute: '#566070', accent: '#0d1117', signal: '#2b4ad8', danger: '#d23c22' },
   blueprint: { bg: '#061529', surface: '#0b2444', ink: '#eaf3ff', mute: '#98b4da', accent: '#8fd8ff', signal: '#8fd8ff', danger: '#ff8f6b' },
   terminal: { bg: '#000000', surface: '#050b05', ink: '#c9ffd8', mute: '#7cc994', accent: '#7dffa8', signal: '#7dffa8', danger: '#ffd23f' },
 };
