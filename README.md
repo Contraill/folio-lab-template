@@ -6,10 +6,9 @@ The pilot, **Two Spirals**, is a small neural network (2 → 24 → 24 → 1, wr
 
 ## Start an experiment
 
-1. **Use this template** on GitHub to create a new public repository.
-2. Rename it in three places: `name` in `package.json`, `name` in `wrangler.jsonc` and the `<title>` in `index.html`.
-3. Write your experiment in `src/experiments/` (below) and import it in `src/main.ts` instead of the spirals.
-4. Fill in `.github/folio.yaml`, deploy, set the repository's **homepage** to the app's address and add the **`folio-lab`** topic. Folio lists it at its next build (at most six hours, or at once with *Run workflow* on Folio's Production workflow).
+1. **Use this template** on GitHub and name the repository; the name becomes its address (`<name>.oztozlu.dev`) unless `folio.yaml` sets `name`. The repository may be public or private.
+2. Rename it in `package.json` and the `<title>` in `index.html`, write your experiment in `src/experiments/` (below), import it in `src/main.ts` instead of the spirals, and fill in `folio.yaml`.
+3. Push to `main`. The Folio controller builds it, publishes it at its address and adds it to Folio's `/lab` page; every later push updates it. No secrets, topics, DNS or Cloudflare settings: the first commit made by "Use this template" is picked up within 15 minutes, every push within a minute or two.
 
 ```sh
 pnpm install
@@ -44,22 +43,30 @@ A run (`Run` in `src/lab/types.ts`) holds its seed, configuration, round, metric
 
 Training runs on the main thread, a few milliseconds per frame, so the page stays responsive; a heavier experiment can move `advance()` into a Web Worker without changing the rest. Nothing is drawn while a run is paused.
 
-## How Folio shows it
+## How it is published
 
-`/lab` lists every public repository of the owner with the `folio-lab` topic and an https homepage, with a page per app, `/lab/<repository-name>`, that runs it in a frame when the visitor asks, with *Full screen* and *Open in a new tab*.
+`folio.yaml` is the only setting:
 
-`.github/folio.yaml` (every field optional): `title` and `summary` as `{ en, tr }`, `order`, `embed` (`false` links instead of framing), `embedOptions.aspect` (like `"16:10"`) and `embedOptions.input`. A file that doesn't fit leaves only this app out of Folio, with a warning in Folio's build log.
+```yaml
+kind: lab
+access: public            # lab apps must be public to be listed on Folio
+name: my-lab            # optional: its address, my-lab.oztozlu.dev
+title: { en: …, tr: … }  # English falls back to the repository name
+summary: { en: …, tr: … }
+order: 1                  # earlier on /lab; the rest newest first
+embed: true               # false: Folio links to it instead of running it in the page
+aspect: "16:10"           # the frame's shape on Folio (default 16:9)
+inputs: [keyboard, touch, gamepad, mouse]   # shown on its Folio page
+```
 
-**In the frame**, Folio adds `?folio=1&lang=en|tr&skin=…`; `src/lab/folio.ts` reads the language and the skin's colours. The frame allows the app's scripts, its own storage, downloads (exports), file choosing (imports), full screen and new tabs, and nothing of Folio itself. Runs saved in the frame are kept apart from runs saved with the app opened on its own: export one to move it.
+On every push to `main`, `.github/workflows/folio.yml` tests and builds it with no secrets at all and keeps `dist/` as the `folio-site` artifact. The controller (a GitHub App and its own workflow) reads `folio.yaml` from that commit, checks the build, deploys it to its own Cloudflare Worker at `https://<name>.oztozlu.dev`, checks it answers, and lists it in Folio's catalogue. A file that doesn't fit, or a failed build, leaves the last good version online. Delete `folio.yaml`, archive or delete the repository, and the controller takes it down and out of Folio.
 
-**Who may frame the app** is set in `public/_headers` (`frame-ancestors`), which also locks it to its own origin.
+**On Folio**, `/lab/<name>` runs it in a frame when the visitor asks, with *Full screen* and *Open in a new tab* (which also works without JavaScript). Folio adds `?folio=1&lang=en|tr&skin=graphite|paper|blueprint|terminal` to its address; `folioContext()` reads the language and the skin's colours, and `body.embedded` lets the lab app hide what Folio already shows. The frame allows its scripts, its own storage, full screen, downloads, file choosing and new tabs, and nothing of Folio itself; storage in the frame is kept apart from the lab app opened on its own.
 
-## Deploy
+**Who may frame it**: `public/_headers` sets `frame-ancestors` (Folio, its Preview, a local Folio), and the controller's Worker adds the same rule if a build drops it. The same file locks it to its own origin: no inline scripts, no third-party requests.
 
-As in the play template: static files served by Cloudflare (`wrangler.jsonc`), deployed by `.github/workflows/deploy.yml` on every push to `main`. Once per repository: a Cloudflare API token with **Account · Workers Scripts · Edit**, and a GitHub environment `production` limited to `main` with `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
-
-## Before adding the `folio-lab` topic
+## Before publishing
 
 - A run reaches its milestones, compares them, continues from a checkpoint, exports and imports.
 - It is readable framed and alone, in each skin, at desktop and phone width.
-- `pnpm test` and `pnpm build` pass.
+- `pnpm test` and `pnpm build` pass; the *Folio* workflow is green.
