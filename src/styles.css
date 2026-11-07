@@ -29,5 +29,6 @@ button:disabled { opacity: .45; cursor: default; }
 .files { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
 .button input { position: absolute; width: 1px; height: 1px; opacity: 0; }
 .hint { color: var(--mute); font-size: 13px; margin: 0; }
+.embedded .bar h1 { display: none; } /* Folio shows the title */
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 @media (max-width: 720px) { #lab { grid-template-columns: minmax(0, 1fr); } }
