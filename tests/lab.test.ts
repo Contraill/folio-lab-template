@@ -48,3 +48,11 @@ test('an import is checked before anything is kept', () => {
   assert.throws(() => importRun(exp, bad((f) => { f.run.step = 1e9; })), /damaged/);
   assert.throws(() => importRun(exp, bad((f) => { f.run.latest.net.w[0] = [1]; })), /cannot be restored/);
 });
+
+test('storage is named after the app\'s place in Folio, so two apps on the site never share it', async () => {
+  const { namespace } = await import('../src/lab/folio.ts');
+  assert.equal(namespace('/play/gates/app/'), 'play:gates:');
+  assert.equal(namespace('/lab/two-spirals/app/index.html'), 'lab:two-spirals:');
+  assert.equal(namespace('/'), '', 'opened anywhere else (vite dev): no prefix');
+  assert.equal(namespace('/play/Gates/app/'), '');
+});

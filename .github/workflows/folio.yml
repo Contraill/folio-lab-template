@@ -1,7 +1,7 @@
 name: Folio
 
 # Every push to main: tests and a build, with no secrets, kept as the `folio-site` artifact. The Folio controller
-# picks it up from there and publishes it as folio.yaml says; nothing here can reach Cloudflare.
+# picks it up from there and publishes it as site.yaml says; nothing here can reach Cloudflare.
 on:
   push:
     branches: [main]

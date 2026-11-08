@@ -1,0 +1,12 @@
+# How the Folio controller publishes this repository. Push to main: the workflow tests and builds it, the controller
+# checks the build and Folio serves it at https://oztozlu.dev/lab/<name>/app/, with a page at /lab/<name>.
+kind: lab                   # lab (a lab app), play (a game) or site (a separate site at <name>.oztozlu.dev)
+# name: my-experiment       # its place in Folio, /lab/my-experiment; by default the repository's name in lower case
+title: { en: Two Spirals, tr: İki Sarmal }
+summary:
+  en: A small neural network learns to tell two spirals apart. Compare what it knows at round 100, 500 and 1000.
+  tr: Küçük bir sinir ağı iki sarmalı birbirinden ayırmayı öğreniyor. 100., 500. ve 1000. turda bildiklerini karşılaştır.
+order: 1                    # earlier on /lab than apps without one; the rest newest first
+embed: true                 # false: Folio links to the app instead of running it in the page
+aspect: "16:10"             # the frame's shape on Folio, width:height
+inputs: [mouse, touch, keyboard]

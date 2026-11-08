@@ -1,9 +1,11 @@
-/* Runs kept in this browser (IndexedDB), so a run survives a reload. Storage belongs to the app's own site; framed
-   in Folio, the browser keeps it apart from the same app opened on its own. It can be cleared at any time: export
-   a run to keep it. */
+/* Runs kept in this browser (IndexedDB), so a run survives a reload. Folio serves the app from its own site, so the
+   runs are the same framed in Folio and opened in a tab; the database is named after the app's place in Folio, so
+   two lab apps never share one. It can be cleared at any time: export a run to keep it. */
 import type { Run } from './types.ts';
 
-const DB = 'folio-lab';
+import { namespace } from './folio.ts';
+
+const DB = `${namespace()}runs`;
 const STORE = 'runs';
 
 function open(): Promise<IDBDatabase> {

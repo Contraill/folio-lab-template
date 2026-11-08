@@ -17,3 +17,10 @@ export function folioContext(search = location.search, prefersDark = matchMedia(
   const palette = PALETTES[skin] ?? (prefersDark ? PALETTES.graphite : PALETTES.paper);
   return { embedded: params.get('folio') === '1', lang, palette };
 }
+
+/** Where Folio serves this app, /play/<name>/app/ or /lab/<name>/app/, as a storage prefix ("play:<name>:"). Folio's
+    apps share its origin, so every key and database starts with it; opened anywhere else (vite dev) it is empty. */
+export function namespace(pathname = location.pathname): string {
+  const m = /^\/(play|lab)\/([a-z0-9-]+)\/app\//.exec(pathname);
+  return m ? `${m[1]}:${m[2]}:` : '';
+}
