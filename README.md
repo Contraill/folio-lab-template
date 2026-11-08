@@ -40,7 +40,7 @@ A push is usually live on the Folio Preview within about five minutes. Productio
 **If something goes wrong**, the last good version stays where it is:
 
 - a failed test or build: nothing is published; the next push tries again;
-- a build the controller refuses: the repository is marked as failing on the controller's status page and in its run log, with the reason, and the controller tries again after 10, 20, 40, 80 and 160 minutes (a new commit starts over);
+- a build the controller refuses: the repository is marked as failing in the controller's run log, with the reason, and the controller tries again after 10, 20, 40, 80 and 160 minutes (a new commit starts over);
 - Folio can't fetch or verify the build: that one experiment is left out of Folio's build, with a warning, and everything else is published.
 
 **Going back**: revert the commit and push; the controller publishes the reverted build like any other.
@@ -79,7 +79,7 @@ Folio adds `?folio=1&lang=en|tr&skin=graphite|paper|blueprint|terminal` to its a
 The experiment is Folio's own files, so it shares Folio's origin (`oztozlu.dev`):
 
 - **Runs** are the same in the frame and in its own tab. The database is named after the app's place in Folio (`lab:<name>:runs`, from `namespace()`), so two lab apps never share one.
-- **Frame**: `sandbox="allow-scripts allow-same-origin allow-pointer-lock allow-downloads allow-popups allow-popups-to-escape-sandbox"` (downloads are what *Export run* needs), with `allow="fullscreen; gamepad; autoplay; clipboard-write"`. Because the app has Folio's origin, the sandbox is **not a security boundary**; it is acceptable only because every app is the owner's own repository, built by its own workflow and checked by the controller. Treat an experiment's dependencies as part of Folio.
+- **Frame**: `sandbox="allow-scripts allow-same-origin allow-pointer-lock allow-downloads"` (downloads are what *Export run* needs), with `allow="fullscreen; gamepad; autoplay"`; no pop-ups. Because the app has Folio's origin, the sandbox is **not a security boundary**; opened in a new tab, it has no sandbox at all. That is acceptable only because every app is the owner's own repository (never a fork), built by its own workflow and checked by the controller; the check proves the files are the ones that workflow built, not that its code is safe. Treat an experiment's dependencies as part of Folio.
 - **Policy** that Folio sends with every file: `default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; media-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'`. No third-party requests (a model or dataset must be part of the build); WebAssembly and Web Workers are allowed; its pages carry `noindex`.
 - **Files**: `index.html` without caching; files with a content hash in their name for a year; an address without an extension that isn't a file gets the app's page with a `<base>`; `/lab/<name>/app` redirects to `/lab/<name>/app/`.
 
