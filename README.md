@@ -35,7 +35,7 @@ Requires Node 26 (`.node-version`) and pnpm 12.
 2. The Folio controller (a GitHub App and its own workflow, in the private `folio-controller` repository) hears the build finish. It reads `site.yaml` **from the same commit as the build**, checks the files (below), packs them, keeps them by their SHA-256, and adds the experiment to Folio's catalogue with that hash.
 3. The controller starts Folio's build. Folio downloads the experiment, accepts it only if the hash and size match, and serves it from its own Worker at `/lab/<name>/app/`.
 
-A push is usually live on the Folio Preview within about five minutes. Production gets it the same way once Folio is live there (see *Implemented, deferred, limits*).
+A push is usually live on the Folio Preview within about five minutes. Production (`oztozlu.dev`) gets it at the same time: the controller starts both of Folio's builds.
 
 **If something goes wrong**, the last good version stays where it is:
 
@@ -131,7 +131,7 @@ Training runs on the main thread, a few milliseconds per frame, so the page stay
 | Push → build → checked → served by Folio at `/lab/<name>/app/` | Implemented; the same path as games, tested end to end on the Folio Preview |
 | Catalogue entry, page, frame, full screen, new tab, runs per app in IndexedDB, export and import | Implemented |
 | Removal by deleting `site.yaml`, archiving or deleting the repository | Implemented; tested |
-| Publishing to production `oztozlu.dev` | Waits for Folio's go-live, when the controller also starts Folio's production workflow (`FOLIO_TARGETS`) |
+| Publishing to production `oztozlu.dev` | Implemented: the controller starts Folio's Preview and production builds together |
 | Server code (training on a server, an API) | Not supported: an experiment is static files running in the browser |
 | A protected experiment (sign-in or password) | Not supported; use `folio-site-template` |
 | Isolation from Folio's page | Limited: same origin, so the sandbox is not a boundary |
